@@ -1,10 +1,10 @@
 
-########### K8s Cluster Setup ######################
-==============================================================================
+#K8s Cluster Setup
+=============================================================================
 ```
 hostnamectl set-hostname "k8s-master02" && exec bash
 
-vim  /etc/hosts													// Add all hosts entry
+vim  /etc/hosts	                                                // Add all hosts entry
 
 swapoff -a														// To check swap:  swapon --show  or   free -h
 sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab					// # swap mountpoint in fstab
@@ -26,7 +26,7 @@ firewall-cmd --permanent --zone=trusted --change-interface=ens33								// firew
 ````
 ----------------------------------------------------------
 - ufw rules for Deb based (Ubuntu):
-
+```
 sudo ufw allow 6440/tcp
 sudo ufw allow 6443/tcp
 sudo ufw allow 2379:2380/tcp
@@ -79,8 +79,9 @@ echo -e "net.bridge.bridge-nf-call-iptables = 1\nnet.ipv4.ip_forward = 1\nnet.br
 sysctl --system																		#//To check:  sysctl -a | grep -E 'ip_forward|bridge'
 sysctl -w net.ipv4.ip_forward=1
 
+```
 -------------------------
-# For RedHat:
+- K8s & Cri-O Repo for RedHat:
 
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo 
 [kubernetes]
@@ -101,22 +102,28 @@ gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.30/rpm/
 EOF
 
 -----------------------------------------
-# For Ubuntu:
-
+- K8s & Cri-O Repo for RedHat:
+```
 sudo apt-get update
+``
 # apt-transport-https may be a dummy package; if so, you can skip that package
+```
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
+```
 
-# Download the public signing key for the Kubernetes package repositories
-# If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
-# sudo mkdir -p -m 755 /etc/apt/keyrings
+Download the public signing key for the Kubernetes package repositories
+If the directory `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
+sudo mkdir -p -m 755 /etc/apt/keyrings
+```
 curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-
+```
 # Add the appropriate Kubernetes apt repository.
 # This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
+```
 echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
+``
 ##Add the CRI-O repository
+```
 curl -fsSL https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.30/deb/Release.key |
     gpg --dearmor -o /etc/apt/keyrings/cri-o-apt-keyring.gpg
 
@@ -144,7 +151,7 @@ EOF
 systemctl daemon-reexec
 systemctl daemon-reload
 systemctl restart crio
-
+```
 
 -----------------------
 # For Ubuntu:
