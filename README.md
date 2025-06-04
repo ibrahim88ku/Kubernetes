@@ -1,39 +1,12 @@
-# k8s-cluster
-This is k8s cluster
-- This is my test project on k8s
-    - testhhhh
-        - testjjjj
-## yaml file
-    ```
-    apiVersion: v1
-    kind: Pod
-    metadata:
-     name: nginx
-     labels:
-      name: nginx
-    spec:
-     containers:
-     - name: nginx
-       image: nginx
-       ports:
-       - containerPort: 8080
-     nodeName: node02
-    ```
-## next yaml file
-    ```
-    apiVersion: v1
-    kind: Pod
-    metadata:
-     name: nginx
-     labels:
-      name: nginx
-    spec:
-     containers:
-     - name: nginx
-       image: nginx
-       ports:
-       - containerPort: 8080
-     nodeName: node02
-    ```
+# This is a Kubernetes Implementation 
+- This project contains a complete Kubernetes implementation setup for learning, testing, or production simulation. It includes YAML manifests, configurations, deployment scripts, and documentation to help you build and manage your own Kubernetes cluster from scratch or on a local environment.
 
-# Cluster
+kubernetes-implementation/
+├── manifests/              # All Kubernetes YAML files (pods, services, deployments, etc.)
+│   ├── nginx-deployment.yaml
+│   ├── mysql-statefulset.yaml
+│   └── ...
+├── scripts/                # Helper scripts (e.g., install tools, setup cluster)
+├── docs/                   # Additional documentation and setup guides
+├── .gitignore
+└── README.md               # You're here!
