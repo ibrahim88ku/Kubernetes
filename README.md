@@ -3,6 +3,7 @@ This is k8s cluster
 - This is my test project on k8s
     - testhhhh
         - testjjjj
+## yaml file
     ```
     apiVersion: v1
     kind: Pod
@@ -18,4 +19,21 @@ This is k8s cluster
        - containerPort: 8080
      nodeName: node02
     ```
-    
+## next yaml file
+    ```
+    apiVersion: v1
+    kind: Pod
+    metadata:
+     name: nginx
+     labels:
+      name: nginx
+    spec:
+     containers:
+     - name: nginx
+       image: nginx
+       ports:
+       - containerPort: 8080
+     nodeName: node02
+    ```
+
+# Cluster
