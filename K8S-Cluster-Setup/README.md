@@ -79,10 +79,10 @@ echo -e "net.bridge.bridge-nf-call-iptables = 1\nnet.ipv4.ip_forward = 1\nnet.br
 sysctl --system																		#//To check:  sysctl -a | grep -E 'ip_forward|bridge'
 sysctl -w net.ipv4.ip_forward=1
 
-```
 -------------------------
+```
 - K8s & Cri-O Repo for RedHat:
-
+```
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo 
 [kubernetes]
 name=Kubernetes
@@ -102,7 +102,7 @@ gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.30/rpm/
 EOF
 
 -----------------------------------------
-- K8s & Cri-O Repo for RedHat:
+- K8s & Cri-O Repo for Ubuntu:
 ```
 sudo apt-get update
 # apt-transport-https may be a dummy package; if so, you can skip that package
