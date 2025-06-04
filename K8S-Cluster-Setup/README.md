@@ -11,11 +11,10 @@ sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab					// # swap mountpoint in fstab
 
 setenforce 0													// To check: getenforce and should be Permissive
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=permissive/g' /etc/sysconfig/selinux
-```
 
-- Filewall rule - RedHat based
+# Filewall rule - RedHat based
 ---------------------------------------------------------
-```
+
 firewall-cmd --permanent --add-port={6440,6443,2379-2380,10250,10251,10252,10256,10257,10259,30000-32767,179,53}/tcp
 firewall-cmd --permanent --add-port={4789,8472,53}/udp
 firewall-cmd --permanent --zone=trusted --add-source=10.240.0.0/16 
@@ -23,10 +22,10 @@ firewall-cmd --permanent --zone=trusted --add-source=10.96.0.0/12
 firewall-cmd --permanent --direct --add-rule ipv4 filter INPUT 0 -p 4 -j ACCEPT
 firewall-cmd --permanent --direct --add-rule ipv4 filter FORWARD 0 -p 4 -j ACCEPT
 firewall-cmd --permanent --zone=trusted --change-interface=ens33								// firewall-cmd --list-all
-````
+
 ----------------------------------------------------------
-- ufw rules for Deb based (Ubuntu):
-```
+# ufw rules for Deb based (Ubuntu):
+
 sudo ufw allow 6440/tcp
 sudo ufw allow 6443/tcp
 sudo ufw allow 2379:2380/tcp
@@ -80,9 +79,8 @@ sysctl --system																		#//To check:  sysctl -a | grep -E 'ip_forward|b
 sysctl -w net.ipv4.ip_forward=1
 
 -------------------------
-```
-- K8s & Cri-O Repo for RedHat:
-```
+# K8s & Cri-O Repo for RedHat:
+
 cat <<EOF | tee /etc/yum.repos.d/kubernetes.repo 
 [kubernetes]
 name=Kubernetes
@@ -102,8 +100,8 @@ gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.30/rpm/
 EOF
 
 -----------------------------------------
-- K8s & Cri-O Repo for Ubuntu:
-```
+# K8s & Cri-O Repo for Ubuntu:
+
 sudo apt-get update
 # apt-transport-https may be a dummy package; if so, you can skip that package
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
@@ -355,57 +353,3 @@ kubectl taint nodes dc3-kworker01 key=value:NoSchedule-		//Remove the Taints on 
 
 
 ==============================
---------------------------------
-
-10.80.60.246	m1
-10.80.60.241	m2
-10.80.60.247	w1
-10.80.60.248	w2
-
-
-frontend k8s
-    bind *:6440
-    mode tcp
-    option tcplog
-    default_backend k8s-backend
-
-backend k8s-backend
-    mode tcp
-    option tcp-check
-    balance roundrobin
-    server m1 10.80.60.246:6443 check
-    server m2 127.0.0.1:6443 check
-	
-kubeadm init --control-plane-endpoint "10.80.60.252:6440" --upload-certs --pod-network-cidr=10.240.0.0/16 --cri-socket=unix:///var/run/crio/crio.sock
-Your Kubernetes control-plane has initialized successfully!
-
-To start using your cluster, you need to run the following as a regular user:
-
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-
-Alternatively, if you are the root user, you can run:
-
-  export KUBECONFIG=/etc/kubernetes/admin.conf
-
-You should now deploy a pod network to the cluster.
-Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
-
-You can now join any number of the control-plane node running the following command on each as root:
-
-  kubeadm join 10.80.60.252:6440 --token 2e7ig7.us7d25y669y71tsz \
-        --discovery-token-ca-cert-hash sha256:b894e3490317f3a7032f14267a030d2b02efdb490e278f1e9d7f6963aa95f42c \
-        --control-plane --certificate-key 8a7a7233e4fc7f2875d210bb62e10176d00168e33b9ee06c754ab3e3cd515136
-
-Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
-As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
-"kubeadm init phase upload-certs --upload-certs" to reload certs afterward.
-
-Then you can join any number of worker nodes by running the following on each as root:
-
-kubeadm join 10.80.60.252:6440 --token 2e7ig7.us7d25y669y71tsz \
-        --discovery-token-ca-cert-hash sha256:b894e3490317f3a7032f14267a030d2b02efdb490e278f1e9d7f6963aa95f42c
-root@m1:~#
-
