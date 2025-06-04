@@ -102,12 +102,12 @@ gpgkey=https://download.opensuse.org/repositories/isv:/cri-o:/stable:/v1.30/rpm/
 EOF
 
 -----------------------------------------
-- K8s & Cri-O Repo for RedHat:
+- K8s & Cri-O Repo for Ubuntu:
 ```
 sudo apt-get update
-``
+
 # apt-transport-https may be a dummy package; if so, you can skip that package
-```
+
 sudo apt-get install -y apt-transport-https ca-certificates curl gpg
 ```
 
